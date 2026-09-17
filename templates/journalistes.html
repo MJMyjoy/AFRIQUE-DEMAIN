@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Journalistes attitrés - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section">
+    <i class="fas fa-globe-africa globe-overlay"></i>
+    <div class="container position-relative" style="z-index: 1;">
+        <h1 class="display-5 fw-bold mb-3">NOTRE MARCHE MONDIAL DE JOURNALISTES AFRICAINS VARIÉS</h1>
+        <p class="lead mx-auto">
+            Une équipe de professionnels au service de l'information,
+            pour une Afrique mieux informée et plus connectée.
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background-color: var(--light-bg); min-height: 60vh;">
+    <div class="container">
+        <div class="row g-4">
+            {% for journaliste in journalistes %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <a href="{% url 'core:journaliste_detail' journaliste.pk %}" class="card-link">
+                    <div class="journalist-card" {% if journaliste.categorie %}style="--accent-color: {{ journaliste.categorie.couleur }};"{% endif %}>
+                        <!-- Accent bar couleur catégorie -->
+                        {% if journaliste.categorie %}
+                        <span style="position:absolute;top:0;left:0;width:4px;height:100%;background:{{ journaliste.categorie.couleur }};border-radius:14px 0 0 14px;"></span>
+                        {% endif %}
+
+                        <!-- Photo de profil -->
+                        {% if journaliste.photo_profil %}
+                        <img src="{{ journaliste.photo_profil.url }}" alt="{{ journaliste.prenom }} {{ journaliste.nom }}" class="journalist-photo">
+                        {% else %}
+                        <div class="journalist-photo-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        {% endif %}
+
+                        <!-- Nom -->
+                        <div class="journalist-name">
+                            <span class="first-name">{{ journaliste.prenom }}</span>
+                            <span class="last-name">{{ journaliste.nom }}</span>
+                        </div>
+
+                        <!-- Fonction -->
+                        <div class="journalist-function">{{ journaliste.fonctions }}</div>
+
+                        <!-- Infos localisation et médias -->
+                        <div class="journalist-info">
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RDC – {{ journaliste.region|default:"Afrique Centrale" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-newspaper"></i>
+                                <span>{{ journaliste.medias|default:"Presse écrite | Web" }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Badge catégorie -->
+                        {% if journaliste.categorie %}
+                        <div class="category-badge" style="background-color: {{ journaliste.categorie.couleur }};">
+                            {% if journaliste.categorie.icone %}
+                            <i class="fas fa-{{ journaliste.categorie.icone }}"></i>
+                            {% endif %}
+                            {{ journaliste.categorie.nom|upper }}
+                        </div>
+                        {% else %}
+                        <div class="category-badge" style="background-color: var(--dark-navy);">
+                            <i class="fas fa-pen"></i>
+                            GÉNÉRALISTE
+                        </div>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-users fa-4x text-muted mb-3" style="opacity: 0.2;"></i>
+                <h4 class="text-muted">Aucun journaliste disponible pour le moment.</h4>
+                <p class="text-muted">Les journalistes approuvés apparaîtront ici.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

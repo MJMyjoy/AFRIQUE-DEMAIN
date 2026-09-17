@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Publier une actualité - AFRIQUE DEMAIN{% endblock %}
+
+{% block content %}
+<section class="py-4 bg-primary text-white text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-0">Publier une actualité</h2>
+    </div>
+</section>
+
+<section class="py-5 bg-light min-vh-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="mb-4">
+                    <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary rounded-pill">
+                        <i class="fas fa-arrow-left me-2"></i> Retour au tableau de bord
+                    </a>
+                </div>
+                
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="alert alert-info rounded-3 mb-4">
+                            <i class="fas fa-info-circle me-2"></i> Toute nouvelle actualité sera soumise à l'approbation d'un administrateur avant d'être visible publiquement.
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Titre de l'actualité *</label>
+                                {{ form.titre }}
+                            </div>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Catégorie *</label>
+                                    {{ form.categorie }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Lieu / Ville de l'événement</label>
+                                    {{ form.lieu }}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Image d'illustration *</label>
+                                {{ form.illustration }}
+                                <div class="form-text mt-2">Une belle image augmente la visibilité de votre article. Format JPG ou PNG.</div>
+                            </div>
+
+                            <div class="mb-5">
+                                <label class="form-label fw-bold">Contenu de l'article *</label>
+                                {{ form.contenu }}
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-3">
+                                <a href="{% url 'core:dashboard' %}" class="btn btn-light rounded-pill px-4">Annuler</a>
+                                <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold">
+                                    <i class="fas fa-paper-plane me-2"></i> Soumettre l'actualité
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

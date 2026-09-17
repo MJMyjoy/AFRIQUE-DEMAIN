@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ actualite.titre }} - AFRIQUE DEMAIN{% endblock %}
+
+{% block content %}
+<section class="py-4 bg-light">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'core:accueil' %}" class="text-decoration-none">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'core:actualites' %}" class="text-decoration-none">Actualités</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ actualite.titre|truncatechars:30 }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Article Header -->
+                <div class="mb-4">
+                    <span class="badge rounded-pill px-3 py-2 mb-3" style="background-color: {{ actualite.categorie.couleur|default:'#1565c0' }}">
+                        {{ actualite.categorie.nom|upper }}
+                    </span>
+                    <h1 class="fw-bold mb-3 text-dark">{{ actualite.titre }}</h1>
+                    
+                    <div class="d-flex flex-wrap align-items-center text-muted mb-4 gap-3">
+                        <div>
+                            <i class="far fa-calendar-alt me-1"></i> Publié le {{ actualite.date_publication|date:"d F Y à H:i" }}
+                        </div>
+                        {% if actualite.lieu %}
+                        <div>
+                            <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ actualite.lieu }}
+                        </div>
+                        {% endif %}
+                        <div class="ms-auto d-flex align-items-center">
+                            {% if actualite.auteur.photo_profil %}
+                                <img src="{{ actualite.auteur.photo_profil.url }}" alt="Auteur" class="rounded-circle me-2 object-fit-cover" width="30" height="30">
+                            {% else %}
+                                <i class="fas fa-user-circle fs-4 me-2"></i>
+                            {% endif %}
+                            <span>Par <a href="{% url 'core:journaliste_detail' actualite.auteur.pk %}" class="fw-medium text-dark text-decoration-none hover-primary">{{ actualite.auteur.prenom }} {{ actualite.auteur.nom|upper }}</a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Image -->
+                {% if actualite.illustration %}
+                <div class="mb-5 rounded-4 overflow-hidden shadow-sm">
+                    <img src="{{ actualite.illustration.url }}" alt="{{ actualite.titre }}" class="img-fluid w-100 object-fit-cover" style="max-height: 500px;">
+                </div>
+                {% endif %}
+
+                <!-- Content -->
+                <div class="article-content text-dark mb-5" style="font-size: 1.1rem; line-height: 1.8;">
+                    {{ actualite.contenu|linebreaks }}
+                </div>
+
+                <div class="d-flex mt-5 border-top pt-4">
+                    <a href="{% url 'core:actualites' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fas fa-arrow-left me-2"></i> Retour aux actualités
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <div class="bg-light p-4 rounded-4 sticky-top" style="top: 100px;">
+                    <h4 class="fw-bold mb-4 border-bottom pb-2">Actualités similaires</h4>
+                    
+                    <div class="d-flex flex-column gap-4">
+                        {% for rel_act in related_actualites|default:"" %}
+                        <div class="d-flex gap-3">
+                            {% if rel_act.illustration %}
+                            <img src="{{ rel_act.illustration.url }}" class="rounded-3 object-fit-cover" width="80" height="80" alt="{{ rel_act.titre }}">
+                            {% else %}
+                            <div class="rounded-3 bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; flex-shrink: 0;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="fw-bold mb-1 line-clamp-2" style="font-size: 0.95rem;">
+                                    <a href="{% url 'core:actualite_detail' rel_act.slug %}" class="text-dark text-decoration-none">{{ rel_act.titre }}</a>
+                                </h6>
+                                <p class="text-muted small mb-0">{{ rel_act.date_publication|date:"d M Y" }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted small">Aucune actualité similaire.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

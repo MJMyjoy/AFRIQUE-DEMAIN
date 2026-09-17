@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil de {{ journaliste.prenom }} {{ journaliste.nom }} - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section" style="padding: 2.5rem 0;">
+    <div class="container position-relative" style="z-index: 1;">
+        <h1 class="h3 fw-bold mb-0">Profil Journaliste</h1>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background-color: var(--light-bg); min-height: 70vh;">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{% url 'core:accueil' %}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'core:journalistes' %}">Journalistes</a></li>
+                <li class="breadcrumb-item active">{{ journaliste.prenom }} {{ journaliste.nom }}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <!-- Colonne profil -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="position: sticky; top: 90px;">
+                    <div class="text-center py-5 px-3" style="background: linear-gradient(135deg, rgba(21,101,192,0.08), rgba(26,35,126,0.05));">
+                        {% if journaliste.categorie %}
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge rounded-pill text-white px-3 py-2" style="background-color: {{ journaliste.categorie.couleur }};">
+                                {{ journaliste.categorie.nom|upper }}
+                            </span>
+                        </div>
+                        {% endif %}
+                        <div class="mb-3 d-inline-block p-1 bg-white rounded-circle shadow-sm">
+                            {% if journaliste.photo_profil %}
+                            <img src="{{ journaliste.photo_profil.url }}" alt="{{ journaliste.nom }}" class="rounded-circle" width="140" height="140" style="object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 140px; height: 140px;">
+                                <i class="fas fa-user fa-4x"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <h3 class="fw-normal mb-1 text-dark">{{ journaliste.prenom }} <span class="fw-bold text-uppercase">{{ journaliste.nom }}</span></h3>
+                        <p class="text-muted mb-0">{{ journaliste.fonctions }}</p>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <ul class="list-unstyled mb-0 d-flex flex-column gap-3">
+                            <li class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle text-primary me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block">Nationalité</small>
+                                    <span class="fw-medium text-dark">{{ journaliste.nationalite|default:"Non spécifiée" }}</span>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle text-primary me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block">Localisation</small>
+                                    <span class="fw-medium text-dark">{{ journaliste.ville_residence|default:"-" }}, RDC ({{ journaliste.region|default:"-" }})</span>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle text-primary me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block">Lieu de service</small>
+                                    <span class="fw-medium text-dark">{{ journaliste.lieu_service|default:"-" }}</span>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle text-primary me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block">Médias</small>
+                                    <span class="fw-medium text-dark">{{ journaliste.medias|default:"Média indépendant" }}</span>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle text-primary me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block">Contact</small>
+                                    <span class="fw-medium text-dark">{{ journaliste.email }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne contenu -->
+            <div class="col-lg-8">
+                <!-- Bio -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3 text-dark border-bottom pb-3">
+                            <i class="fas fa-user-circle text-primary me-2"></i>Biographie
+                        </h4>
+                        {% if journaliste.bio %}
+                            <div class="text-muted" style="line-height: 1.8;">{{ journaliste.bio|linebreaks }}</div>
+                        {% else %}
+                            <p class="text-muted fst-italic mb-0">Aucune biographie n'a été fournie par ce journaliste.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Actualités publiées -->
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3 text-dark border-bottom pb-3">
+                            <i class="fas fa-newspaper text-primary me-2"></i>Actualités publiées ({{ actualites.count }})
+                        </h4>
+
+                        {% for actualite in actualites %}
+                        <div class="d-flex gap-3 {% if not forloop.first %}mt-3 pt-3 border-top{% endif %}">
+                            {% if actualite.illustration %}
+                            <img src="{{ actualite.illustration.url }}" class="rounded-3 flex-shrink-0" width="110" height="85" style="object-fit: cover;" alt="{{ actualite.titre }}">
+                            {% else %}
+                            <div class="rounded-3 bg-light d-flex align-items-center justify-content-center flex-shrink-0" style="width: 110px; height: 85px;">
+                                <i class="fas fa-newspaper text-secondary fa-2x"></i>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    <a href="{% url 'core:actualite_detail' actualite.slug %}" class="text-dark text-decoration-none">{{ actualite.titre }}</a>
+                                </h6>
+                                <p class="text-muted small mb-1"><i class="far fa-calendar-alt me-1"></i> {{ actualite.date|date:"d M Y" }}</p>
+                                <p class="text-muted small mb-0">{{ actualite.contenu|truncatechars:100 }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted mb-0">Ce journaliste n'a pas encore publié d'actualités.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Bouton Contacter -->
+                <div class="card border-0 shadow-sm rounded-4 mt-4" style="background: linear-gradient(135deg, #1a237e, #1565c0);">
+                    <div class="card-body p-4 text-center text-white">
+                        <i class="fas fa-envelope fa-2x mb-3" style="opacity: 0.7;"></i>
+                        <h5 class="fw-bold mb-2">Intéressé par ce journaliste ?</h5>
+                        <p class="mb-3" style="opacity: 0.85;">Contactez Afrique Demain pour être mis en relation avec {{ journaliste.prenom }} {{ journaliste.nom }}.</p>
+                        <a href="{% url 'core:contact' %}" class="btn btn-light rounded-pill px-5 py-2 fw-bold text-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Contacter ce journaliste
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'core:journalistes' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fas fa-arrow-left me-2"></i>Retour aux journalistes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

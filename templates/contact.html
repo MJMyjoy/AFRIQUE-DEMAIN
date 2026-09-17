@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section text-center py-5">
+    <div class="container">
+        <h1 class="display-5 fw-bold text-white mb-0 text-uppercase">CONTACTEZ-NOUS</h1>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-100">
+    <div class="container">
+        <div class="row g-5">
+            
+            <!-- Contact Info -->
+            <div class="col-lg-5">
+                <h3 class="fw-bold mb-4 text-dark">Nos Coordonnées</h3>
+                <p class="text-muted mb-5">Vous avez une question, une suggestion ou vous souhaitez collaborer avec Afrique Demain ? N'hésitez pas à nous contacter via les canaux ci-dessous ou en remplissant le formulaire.</p>
+                
+                <div class="d-flex mb-4">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-4 shadow-sm" style="width: 50px; height: 50px; flex-shrink: 0;">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Adresse</h5>
+                        <p class="text-muted">123 Avenue de l'Indépendance<br>Kinshasa, Gombe<br>République Démocratique du Congo</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-4 shadow-sm" style="width: 50px; height: 50px; flex-shrink: 0;">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Téléphone</h5>
+                        <p class="text-muted">+243 81 234 56 78<br>+243 99 876 54 32</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-5">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-4 shadow-sm" style="width: 50px; height: 50px; flex-shrink: 0;">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Email</h5>
+                        <p class="text-muted">contact@mediaspresse.com<br>support@mediaspresse.com</p>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3">Suivez-nous</h5>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4 p-lg-5">
+                        <h3 class="fw-bold mb-4 text-dark">Envoyez-nous un message</h3>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-medium">Votre Nom *</label>
+                                    <input type="text" class="form-control px-3 py-2" required placeholder="Ex: Jean Dupont">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-medium">Votre Email *</label>
+                                    <input type="email" class="form-control px-3 py-2" required placeholder="Ex: jean@example.com">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-medium">Sujet *</label>
+                                    <input type="text" class="form-control px-3 py-2" required placeholder="Ex: Demande de partenariat">
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <label class="form-label fw-medium">Message *</label>
+                                    <textarea class="form-control px-3 py-2" rows="6" required placeholder="Comment pouvons-nous vous aider ?"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold w-100">
+                                        <i class="fas fa-paper-plane me-2"></i> Envoyer le message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Note: Since no specific ContactForm was requested in views, I'm using standard HTML inputs. -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock %}

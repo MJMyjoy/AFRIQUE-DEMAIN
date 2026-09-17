@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}À Propos - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section text-center py-5">
+    <div class="container">
+        <h1 class="display-5 fw-bold text-white mb-0 text-uppercase">À PROPOS DE NOUS</h1>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center mb-5 pb-5 border-bottom">
+            <div class="col-lg-6 mb-4 mb-lg-0 pr-lg-5">
+                <h2 class="fw-bold text-dark mb-4">Notre Histoire : Afrique Demain</h2>
+                <p class="text-muted mb-3">AFRIQUE DEMAIN est né d'un constat simple : le journalisme africain regorge de talents qui manquent souvent de visibilité, d'accompagnement et de plateformes pour exprimer leur plein potentiel à l'échelle internationale.</p>
+                <p class="text-muted mb-3">Lancée au cœur de la République Démocratique du Congo, notre plateforme s'est rapidement imposée comme le point de ralliement des professionnels de l'information cherchant à valoriser leur travail tout en respectant les standards les plus exigeants du métier.</p>
+                <p class="text-muted">Aujourd'hui, nous rassemblons une communauté grandissante de journalistes engagés, évalués sur leurs performances réelles, pour offrir au monde une information africaine authentique, fiable et plurielle.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-light rounded-4 d-flex align-items-center justify-content-center p-5" style="min-height: 350px;">
+                    <i class="fas fa-users fa-5x text-primary opacity-25"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center mb-5 pb-5">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0 pl-lg-5">
+                <h2 class="fw-bold text-dark mb-4">Le Groupe Afrique Demain</h2>
+                <p class="text-muted mb-3"><strong>AFRIQUE DEMAIN</strong> est une organisation panafricaine dédiée au développement structurel, médiatique et démocratique du continent. Notre programme de formation <strong>MÉDIAS PRESSE</strong> vise à former la prochaine génération de journalistes professionnels.</p>
+                <p class="text-muted mb-3">La vision d'Afrique Demain est celle d'une Afrique forte, souveraine dans sa narration, où les médias jouent pleinement leur rôle de quatrième pouvoir. Nous investissons dans la formation continue, les technologies de l'information, et le réseautage professionnel pour bâtir un écosystème médiatique résilient.</p>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="bg-light rounded-4 d-flex align-items-center justify-content-center p-5" style="min-height: 350px;">
+                    <i class="fas fa-globe-africa fa-5x text-success opacity-25"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-primary bg-opacity-10 rounded-4 p-5 text-center mt-5">
+            <h3 class="fw-bold text-dark mb-4">Rejoignez l'aventure</h3>
+            <p class="lead text-muted mb-4 max-w-700 mx-auto">Que vous soyez un journaliste chevronné ou un jeune talent en devenir, Afrique Demain est votre plateforme.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{% url 'core:register_journalist' %}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold">Espace Journaliste</a>
+                <a href="{% url 'core:contact' %}" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold">Nous contacter</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

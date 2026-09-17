@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion - AFRIQUE DEMAIN{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card border-0 shadow rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary text-white text-center py-4 border-0">
+                        <i class="fas fa-lock fa-2x mb-2"></i>
+                        <h4 class="mb-0 fw-bold">Connexion</h4>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <!-- Form Errors -->
+                        {% if form.errors %}
+                        <div class="alert alert-danger rounded-3 small">
+                            L'email ou le mot de passe est incorrect. Veuillez réessayer.
+                        </div>
+                        {% endif %}
+
+                        <h5 class="fw-bold mb-4 text-center">Avez-vous déjà un compte ?</h5>
+                        
+                        <form method="post" action="{% url 'core:login' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label fw-medium">Adresse email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="mb-4">
+                                <label for="{{ form.password.id_for_label }}" class="form-label fw-medium">Mot de passe</label>
+                                {{ form.password }}
+                            </div>
+                            <div class="d-grid mb-4">
+                                <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold text-uppercase">
+                                    Se connecter
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="position-relative mb-5 mt-4">
+                            <hr class="text-muted opacity-25">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">OU</span>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <h6 class="fw-bold mb-2">Êtes-vous journaliste ?</h6>
+                            <p class="text-muted small mb-3">Rejoignez la plateforme pour publier et être évalué.</p>
+                            <a href="{% url 'core:register_journalist' %}" class="btn btn-outline-dark w-100 rounded-pill py-2">
+                                S'enregistrer comme journaliste
+                            </a>
+                        </div>
+
+                        <div class="text-center">
+                            <h6 class="fw-bold mb-2">Voulez-vous débuter la formation ?</h6>
+                            <p class="text-muted small mb-3">Inscrivez-vous pour développer vos compétences.</p>
+                            <a href="{% url 'core:register_trainee' %}" class="btn btn-outline-info w-100 rounded-pill py-2 text-dark">
+                                S'inscrire à la formation
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

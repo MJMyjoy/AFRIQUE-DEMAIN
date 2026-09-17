@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Tableau de bord - AFRIQUE DEMAIN{% endblock %}
+
+{% block content %}
+<section class="py-4 bg-primary text-white text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-0">Bienvenue, {{ current_journaliste.prenom }} !</h2>
+    </div>
+</section>
+
+<section class="py-5 bg-light min-vh-100">
+    <div class="container">
+        
+        {% if not current_journaliste.approuve %}
+        <div class="alert alert-warning d-flex align-items-center shadow-sm rounded-3 mb-5" role="alert">
+            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+            <div>
+                <h5 class="alert-heading fw-bold mb-1">Votre profil est en attente de validation</h5>
+                <p class="mb-0">Votre compte est actuellement examiné par un administrateur. Vous pourrez publier des actualités et être visible dans l'annuaire dès qu'il sera approuvé.</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row g-4 justify-content-center">
+            <!-- Publier une actualité -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 transition-hover">
+                    <div class="mb-3 mx-auto bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-pen fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Publier une actualité</h5>
+                    <p class="text-muted small mb-4">Rédigez et soumettez vos articles pour publication.</p>
+                    <a href="{% url 'core:publish_news' %}" class="btn btn-outline-primary rounded-pill w-100 mt-auto {% if not current_journaliste.approuve %}disabled{% endif %}">
+                        Accéder
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mes actualités -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 transition-hover">
+                    <div class="mb-3 mx-auto bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-newspaper fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Mes actualités</h5>
+                    <p class="text-muted small mb-4">Gérez vos publications, modifiez-les ou suivez leur statut.</p>
+                    <a href="{% url 'core:my_news' %}" class="btn btn-outline-success rounded-pill w-100 mt-auto">
+                        Accéder
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mes scores -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 transition-hover">
+                    <div class="mb-3 mx-auto bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-bar fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Mes scores</h5>
+                    <p class="text-muted small mb-4">Consultez vos performances et l'évaluation de vos articles.</p>
+                    <a href="{% url 'core:my_scores' %}" class="btn btn-outline-warning rounded-pill w-100 text-dark mt-auto">
+                        Accéder
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mon profil -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 transition-hover">
+                    <div class="mb-3 mx-auto bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Mon profil</h5>
+                    <p class="text-muted small mb-4">Mettez à jour vos informations et gérez votre compte.</p>
+                    <a href="{% url 'core:my_profile' %}" class="btn btn-outline-info rounded-pill w-100 text-dark mt-auto">
+                        Accéder
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

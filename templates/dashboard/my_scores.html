@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes scores - AFRIQUE DEMAIN{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="py-4 bg-warning text-dark text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-0"><i class="fas fa-chart-bar me-2"></i> Mes performances et évaluations</h2>
+    </div>
+</section>
+
+<section class="py-5 bg-light min-vh-100">
+    <div class="container">
+        
+        <div class="mb-4">
+            <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary rounded-pill">
+                <i class="fas fa-arrow-left me-2"></i> Retour
+            </a>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 border-start border-4 border-primary">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 text-uppercase small fw-bold">Total Actualités</p>
+                            <h3 class="fw-bold mb-0">{{ total_news }}</h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-newspaper text-primary fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 border-start border-4 border-success">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 text-uppercase small fw-bold">Approuvées</p>
+                            <h3 class="fw-bold mb-0 text-success">{{ approved_news }}</h3>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-check text-success fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 border-start border-4 border-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 text-uppercase small fw-bold">Score Global</p>
+                            <h3 class="fw-bold mb-0 text-info">{{ current_journaliste.performances|default:"0" }}/100</h3>
+                        </div>
+                        <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-star text-info fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <h5 class="mb-0 fw-bold"><i class="fas fa-list-alt text-primary me-2"></i>Détail des évaluations</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Actualité</th>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Date</th>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Note /20</th>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Performance %</th>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Norme</th>
+                                        <th class="py-3 px-4 text-secondary small fw-bold">Évaluation / Commentaire</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for act in actualites|default:"" %}
+                                    {% if act.note_evaluation %}
+                                    <tr>
+                                        <td class="py-3 px-4 fw-medium text-dark">{{ act.titre|truncatechars:40 }}</td>
+                                        <td class="py-3 px-4 text-muted small">{{ act.date_publication|date:"d M Y" }}</td>
+                                        <td class="py-3 px-4 fw-bold text-primary">{{ act.note_evaluation }}/20</td>
+                                        <td class="py-3 px-4">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2 fw-medium">{{ act.performance_pourcentage }}%</span>
+                                                <div class="progress flex-grow-1" style="height: 6px;">
+                                                    <div class="progress-bar {% if act.performance_pourcentage >= 80 %}bg-success{% elif act.performance_pourcentage >= 50 %}bg-warning{% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ act.performance_pourcentage }}%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            {% if act.norme_respectee %}
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3"><i class="fas fa-check me-1"></i> Respectée</span>
+                                            {% else %}
+                                            <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3"><i class="fas fa-times me-1"></i> Non respectée</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="py-3 px-4 text-muted small">
+                                            {% if act.commentaire_evaluation %}
+                                                <i class="fas fa-quote-left text-secondary opacity-50 me-1"></i>
+                                                {{ act.commentaire_evaluation }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">
+                                            <i class="fas fa-chart-line fa-3x opacity-25 mb-3 d-block"></i>
+                                            Aucune actualité n'a encore été évaluée.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

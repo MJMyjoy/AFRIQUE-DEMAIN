@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon Profil - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section" style="padding: 2rem 0;">
+    <div class="container position-relative" style="z-index: 1;">
+        <h1 class="h3 fw-bold mb-0">Mon Profil</h1>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background-color: var(--light-bg); min-height: 70vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="mb-4">
+                    <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary rounded-pill px-3">
+                        <i class="fas fa-arrow-left me-2"></i>Retour au tableau de bord
+                    </a>
+                </div>
+
+                {% if editing %}
+                <!-- Formulaire de modification -->
+                <div class="form-section" style="max-width: 100%;">
+                    <h4 class="fw-bold mb-4 border-bottom pb-3">
+                        <i class="fas fa-edit text-primary me-2"></i>Mettre à jour mes informations
+                    </h4>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Attention :</strong> toute modification repassera votre profil en mode non approuvé, en attente de validation par l'administrateur.
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Prénom</label>
+                                {{ form.prenom }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                {{ form.nom }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nationalité</label>
+                                {{ form.nationalite }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ville de résidence</label>
+                                {{ form.ville_residence }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Région</label>
+                                {{ form.region }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Lieu de service</label>
+                                {{ form.lieu_service }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Département</label>
+                                {{ form.departement }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fonction(s)</label>
+                                {{ form.fonctions }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Téléphone</label>
+                                {{ form.telephone }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Médias</label>
+                                {{ form.medias }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Parlez de vous</label>
+                                {{ form.bio }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Photo de profil</label>
+                                {{ form.photo_profil }}
+                                {% if journaliste.photo_profil %}
+                                <small class="text-muted d-block mt-1">Photo actuelle conservée si vous ne sélectionnez pas une nouvelle.</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'core:my_profile' %}" class="btn btn-outline-secondary rounded-pill px-4">Annuler</a>
+                            <button type="submit" class="btn btn-primary-custom rounded-pill px-4">
+                                <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {% else %}
+                <!-- Affichage du profil -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                    <!-- En-tête du profil -->
+                    <div class="card-header bg-white p-4 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if journaliste.photo_profil %}
+                                <img src="{{ journaliste.photo_profil.url }}" alt="Photo" class="rounded-circle shadow-sm" width="90" height="90" style="object-fit: cover;">
+                                {% else %}
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 90px; height: 90px;">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <h3 class="fw-bold mb-1">{{ journaliste.prenom }} {{ journaliste.nom|upper }}</h3>
+                                    <p class="text-muted mb-2">{{ journaliste.fonctions }}</p>
+                                    {% if journaliste.approuve %}
+                                        <span class="badge-approved"><i class="fas fa-check-circle me-1"></i>Profil approuvé</span>
+                                    {% else %}
+                                        <span class="badge-pending"><i class="fas fa-hourglass-half me-1"></i>En attente de validation par l'admin</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="{% url 'core:update_profile' %}" class="btn btn-primary-custom rounded-pill px-4">
+                                <i class="fas fa-edit me-2"></i>Mettre à jour mon profil
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Détails du profil -->
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Email</small>
+                                <span class="fw-medium">{{ journaliste.email }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Téléphone</small>
+                                <span class="fw-medium">{{ journaliste.telephone }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Nationalité</small>
+                                <span class="fw-medium">{{ journaliste.nationalite|default:"-" }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Ville de résidence</small>
+                                <span class="fw-medium">{{ journaliste.ville_residence|default:"-" }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Région</small>
+                                <span class="fw-medium">{{ journaliste.region|default:"-" }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Lieu de service</small>
+                                <span class="fw-medium">{{ journaliste.lieu_service|default:"-" }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Département</small>
+                                <span class="fw-medium">{{ journaliste.departement|default:"-" }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Médias</small>
+                                <span class="fw-medium">{{ journaliste.medias|default:"-" }}</span>
+                            </div>
+                            {% if journaliste.categorie %}
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Catégorie</small>
+                                <span class="badge rounded-pill text-white px-3 py-2" style="background-color: {{ journaliste.categorie.couleur }};">
+                                    {{ journaliste.categorie.nom|upper }}
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if journaliste.matricule %}
+                            <div class="col-sm-6">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Matricule</small>
+                                <span class="fw-medium">{{ journaliste.matricule }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="col-12">
+                                <small class="text-muted text-uppercase fw-bold d-block mb-1">Biographie</small>
+                                <div class="p-3 bg-light rounded-3 mt-1">
+                                    {% if journaliste.bio %}
+                                        {{ journaliste.bio|linebreaks }}
+                                    {% else %}
+                                        <span class="text-muted fst-italic">Aucune biographie fournie.</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton désactiver -->
+                <div class="text-end">
+                    <a href="{% url 'core:deactivate_profile' %}" class="btn btn-outline-danger rounded-pill px-4" data-confirm="Êtes-vous sûr de vouloir désactiver votre profil ? Il ne sera plus visible sur la page des journalistes." onclick="return confirm('Êtes-vous sûr de vouloir désactiver votre profil ?');">
+                        <i class="fas fa-user-slash me-2"></i>Désactiver mon profil
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section" style="min-height: 420px; display: flex; align-items: center;">
+    <i class="fas fa-globe-africa globe-overlay"></i>
+    <div class="container position-relative" style="z-index: 1;">
+        <i class="fas fa-globe-africa mb-3" style="font-size: 4rem; opacity: 0.4;"></i>
+        <h1 class="display-4 fw-bold mb-3">AFRIQUE DEMAIN</h1>
+        <h2 class="h4 fw-light mb-4" style="opacity: 0.85;">La base de données nationale des journalistes</h2>
+        <p class="lead mx-auto" style="max-width: 650px; opacity: 0.9;">
+            La première plateforme africaine d'information, de suivi et de valorisation des journalistes sur le continent.
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<!-- Dernières actualités -->
+<section class="py-5" style="background: white;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0" style="text-align: left;">Dernières actualités</h2>
+            <a href="{% url 'core:actualites' %}" class="btn btn-outline-primary rounded-pill px-4">Voir tout <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            {% for actualite in latest_actualites %}
+            <div class="col-md-4">
+                <a href="{% url 'core:actualite_detail' actualite.slug %}" class="card-link">
+                    <div class="news-card">
+                        {% if actualite.illustration %}
+                        <img src="{{ actualite.illustration.url }}" class="news-card-img" alt="{{ actualite.titre }}">
+                        {% else %}
+                        <div class="news-card-img-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        {% endif %}
+                        <div class="news-card-body">
+                            {% if actualite.categorie %}
+                            <span class="news-category-badge" style="background-color: {{ actualite.categorie.couleur }};">
+                                {{ actualite.categorie.nom|upper }}
+                            </span>
+                            {% endif %}
+                            <h5 class="news-card-title">{{ actualite.titre }}</h5>
+                            <p class="news-card-meta">
+                                <i class="far fa-calendar-alt me-1"></i> {{ actualite.date|date:"d M Y" }}
+                                &middot;
+                                <i class="fas fa-user me-1"></i> {{ actualite.journaliste.prenom }} {{ actualite.journaliste.nom }}
+                            </p>
+                            <p class="news-card-excerpt">{{ actualite.contenu|truncatechars:120 }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-newspaper fa-3x text-muted mb-3" style="opacity: 0.3;"></i>
+                <p class="text-muted">Aucune actualité disponible pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Nos journalistes -->
+<section class="py-5 bg-light-custom">
+    <div class="container">
+        <h2 class="section-title">Nos journalistes</h2>
+        <p class="text-center text-muted mb-4">Découvrez notre réseau de professionnels de l'information.</p>
+        <div class="row g-4 justify-content-center mb-4">
+            {% for journaliste in featured_journalistes %}
+            <div class="col-6 col-md-3">
+                <a href="{% url 'core:journaliste_detail' journaliste.pk %}" class="card-link">
+                    <div class="journalist-card">
+                        {% if journaliste.photo_profil %}
+                        <img src="{{ journaliste.photo_profil.url }}" alt="{{ journaliste.nom }}" class="journalist-photo">
+                        {% else %}
+                        <div class="journalist-photo-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        {% endif %}
+                        <div class="journalist-name">
+                            <span class="first-name">{{ journaliste.prenom }}</span>
+                            <span class="last-name">{{ journaliste.nom }}</span>
+                        </div>
+                        <div class="journalist-function">{{ journaliste.fonctions }}</div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">Aucun journaliste mis en avant pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'core:journalistes' %}" class="btn btn-primary-custom rounded-pill px-4 py-2">
+                Voir tous les journalistes <i class="fas fa-users ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Rejoignez-nous -->
+<section class="py-5" style="background: white;">
+    <div class="container text-center">
+        <h2 class="section-title">Rejoignez-nous</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <div class="dashboard-card h-100">
+                    <i class="fas fa-user-edit dashboard-icon"></i>
+                    <h5>Vous êtes journaliste ?</h5>
+                    <p>Rejoignez notre réseau, publiez vos articles, faites évaluer vos performances et gagnez en visibilité.</p>
+                    <a href="{% url 'core:register_journalist' %}" class="btn btn-primary-custom rounded-pill px-4">S'enregistrer</a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="dashboard-card h-100">
+                    <i class="fas fa-graduation-cap dashboard-icon"></i>
+                    <h5>Voulez-vous débuter la formation ?</h5>
+                    <p>Inscrivez-vous à nos programmes de formation pour acquérir les compétences du journalisme professionnel.</p>
+                    <a href="{% url 'core:register_trainee' %}" class="btn btn-primary-custom rounded-pill px-4">S'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

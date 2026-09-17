@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription Journaliste - AFRIQUE DEMAIN{% endblock %}
+
+{% block hero %}
+<section class="hero-section" style="padding: 2.5rem 0;">
+    <div class="container position-relative" style="z-index: 1;">
+        <i class="fas fa-user-edit fa-2x mb-3" style="opacity: 0.6;"></i>
+        <h1 class="h3 fw-bold mb-1">Inscription Journaliste</h1>
+        <p style="opacity: 0.8;">Rejoignez la plateforme et gagnez en visibilité</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background-color: var(--light-bg); min-height: 70vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-section" style="max-width: 100%;">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Note :</strong> Votre profil sera examiné par un administrateur avant d'être publié sur la page des journalistes attitrés.
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <strong>Erreur(s) :</strong> Veuillez corriger les champs ci-dessous.
+                        {{ form.errors }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <h5 class="fw-bold border-bottom pb-2 mb-3 text-navy">
+                            <i class="fas fa-id-card me-2 text-primary"></i>Informations personnelles
+                        </h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Prénom *</label>
+                                {{ form.prenom }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom *</label>
+                                {{ form.nom }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nationalité *</label>
+                                {{ form.nationalite }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ville de résidence *</label>
+                                {{ form.ville_residence }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Région *</label>
+                                {{ form.region }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Lieu de service</label>
+                                {{ form.lieu_service }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Département</label>
+                                {{ form.departement }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fonction(s) *</label>
+                                {{ form.fonctions }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold border-bottom pb-2 mb-3 text-navy">
+                            <i class="fas fa-briefcase me-2 text-primary"></i>Profil professionnel
+                        </h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Adresse mail *</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Numéro de téléphone *</label>
+                                {{ form.telephone }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Médias (ex: Presse écrite | Web | TV)</label>
+                                {{ form.medias }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Parlez de vous</label>
+                                {{ form.bio }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold border-bottom pb-2 mb-3 text-navy">
+                            <i class="fas fa-camera me-2 text-primary"></i>Photo de profil
+                        </h5>
+                        <div class="mb-4">
+                            {{ form.photo_profil }}
+                            <div class="form-text">Format JPG ou PNG recommandé.</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary-custom rounded-pill py-3 fw-bold">
+                                <i class="fas fa-paper-plane me-2"></i>Soumettre ma candidature
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        Vous avez déjà un compte ?
+                        <a href="{% url 'core:login' %}" class="text-primary fw-bold">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
