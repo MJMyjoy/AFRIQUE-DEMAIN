@@ -56,20 +56,26 @@ def partenaires_list(request):
     return render(request, 'partenaires.html', context)
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('core:dashboard')
-        
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             try:
-                user = User.objects.get(email=email)
-                user = authenticate(username=user.username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return redirect('core:dashboard')
+                user_obj = User.objects.get(email=email)
+                user_obj = authenticate(username=user_obj.username, password=password)
+                if user_obj is not None:
+                    if request.user.is_authenticated:
+                        logout(request)
+                    login(request, user_obj)
+                    # Rediriger selon le type d'utilisateur
+                    try:
+                        user_obj.journaliste
+                        return redirect('core:dashboard')
+                    except Journaliste.DoesNotExist:
+                        if user_obj.is_staff:
+                            return redirect('/admin/')
+                        return redirect('core:accueil')
                 else:
                     messages.error(request, 'Identifiants invalides.')
             except User.DoesNotExist:
@@ -78,6 +84,11 @@ def login_view(request):
         form = LoginForm()
         
     return render(request, 'login.html', {'form': form})
+
+
+def csrf_failure_view(request, reason=''):
+    """Page professionnelle en cas d'erreur CSRF (au lieu de la page Django par défaut)."""
+    return render(request, 'csrf_error.html', status=403)
 
 def logout_view(request):
     logout(request)

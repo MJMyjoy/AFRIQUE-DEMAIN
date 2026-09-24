@@ -50,6 +50,7 @@
                 </ul>
                 <div class="d-flex align-items-center">
                     {% if user.is_authenticated and current_journaliste %}
+                        <!-- État 1 : Journaliste connecté -->
                         <div class="dropdown user-menu">
                             <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {% if current_journaliste.photo_profil %}
@@ -70,7 +71,23 @@
                                 <li><a class="dropdown-item text-danger" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Déconnexion</a></li>
                             </ul>
                         </div>
+                    {% elif user.is_authenticated %}
+                        <!-- État 2 : Utilisateur connecté sans profil journaliste (admin) -->
+                        <div class="dropdown user-menu">
+                            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-shield fs-4 me-2 text-primary"></i>
+                                <span class="fw-medium text-dark">{{ user.first_name|default:user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                {% if user.is_staff %}
+                                <li><a class="dropdown-item" href="/admin/"><i class="fas fa-cogs fa-fw me-2 text-primary"></i>Administration</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li><a class="dropdown-item text-danger" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Déconnexion</a></li>
+                            </ul>
+                        </div>
                     {% else %}
+                        <!-- État 3 : Utilisateur non connecté -->
                         <a href="{% url 'core:login' %}" class="btn btn-connect">
                             <i class="fas fa-lock me-2"></i>Se connecter
                         </a>
@@ -139,7 +156,7 @@
             </div>
             <hr class="footer-divider">
             <div class="text-center">
-                <p class="footer-copyright mb-1">&copy; 2025 Afrique Demain. Tous droits réservés.</p>
+                <p class="footer-copyright mb-1">&copy; 2026 Afrique Demain. Tous droits réservés.</p>
                 <p class="footer-credit mb-0">Conçu par le groupe : <strong>AFRIQUE DEMAIN</strong></p>
             </div>
         </div>

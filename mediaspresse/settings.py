@@ -16,7 +16,11 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+
+
+
 INSTALLED_APPS = [
+    "jazzmin",                  # Pour le design admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,6 +31,25 @@ INSTALLED_APPS = [
     'cloudinary',
     'core',
 ]
+
+
+
+# DESIGN ADMIN
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Mon Admin",
+    "site_header": "Panneau de Contrôle",
+    "welcome_sign": "Bienvenue sur l'administration",
+    "search_model": "auth.User",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",             # Choix du thème Bootstrap
+    "dark_mode_theme": "darkly",   # Choix du thème sombre
+}
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -110,3 +133,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/connexion/'
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure_view'

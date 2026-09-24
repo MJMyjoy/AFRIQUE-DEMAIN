@@ -26,7 +26,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold mb-1">Adresse</h5>
-                        <p class="text-muted">123 Avenue de l'Indépendance<br>Kinshasa, Gombe<br>République Démocratique du Congo</p>
+                        <p class="text-muted">Lubumbashi<br>République Démocratique du Congo</p>
                     </div>
                 </div>
                 
@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold mb-1">Téléphone</h5>
-                        <p class="text-muted">+243 81 234 56 78<br>+243 99 876 54 32</p>
+                        <p class="text-muted">+243 977 288 968<br>+243 977 288 968</p>
                     </div>
                 </div>
                 
@@ -46,7 +46,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold mb-1">Email</h5>
-                        <p class="text-muted">contact@mediaspresse.com<br>support@mediaspresse.com</p>
+                        <p class="text-muted">afriqdemain@gmail.com<br>jonathanmpala9@gmail.com</p>
                     </div>
                 </div>
 
@@ -64,25 +64,34 @@
                 <div class="card border-0 shadow-sm rounded-4 h-100">
                     <div class="card-body p-4 p-lg-5">
                         <h3 class="fw-bold mb-4 text-dark">Envoyez-nous un message</h3>
-                        
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                            {% if message.tags == 'success' %}<i class="fas fa-check-circle me-2"></i>{% endif %}
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
                         <form method="post">
                             {% csrf_token %}
                             <div class="row g-3">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-medium">Votre Nom *</label>
-                                    <input type="text" class="form-control px-3 py-2" required placeholder="Ex: Jean Dupont">
+                                    {{ form.nom }}
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-medium">Votre Email *</label>
-                                    <input type="email" class="form-control px-3 py-2" required placeholder="Ex: jean@example.com">
+                                    {{ form.email }}
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label class="form-label fw-medium">Sujet *</label>
-                                    <input type="text" class="form-control px-3 py-2" required placeholder="Ex: Demande de partenariat">
+                                    {{ form.sujet }}
                                 </div>
                                 <div class="col-12 mb-4">
                                     <label class="form-label fw-medium">Message *</label>
-                                    <textarea class="form-control px-3 py-2" rows="6" required placeholder="Comment pouvons-nous vous aider ?"></textarea>
+                                    {{ form.message }}
                                 </div>
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold w-100">
@@ -91,7 +100,6 @@
                                 </div>
                             </div>
                         </form>
-                        <!-- Note: Since no specific ContactForm was requested in views, I'm using standard HTML inputs. -->
                     </div>
                 </div>
             </div>
